@@ -30,11 +30,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('/kategori', KategoriContoller::class);
 Route::resource('/post',     PostController::class);
+Route::get('/post/{id}/kontrol', [PostController::class, 'kontrol']);
+Route::get('/post/{id}/delete', [PostController::class, 'delete']);
+
 Route::resource('/tag',     TagController::class);
+
+
 
 Route::get('/', [ArticleController::class, 'index']);
 Route::get('/{slug}', [ArticleController::class, 'article']);
 Route::get('/konu/{slug}', [ArticleController::class, 'kategori']);
 Route::get('/icerik/{slug}', [ArticleController::class, 'tag']);
-
-

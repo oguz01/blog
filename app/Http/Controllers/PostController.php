@@ -15,15 +15,15 @@ class PostController extends Controller
 
     public function index()
     {
-        $post = Post::select('id', 'picture', 'title','id_kategori')->latest()->paginate(10);
+        $post = Post::select('id', 'picture', 'title', 'id_kategori')->latest()->paginate(10);
         return view('admin.post.index', compact('post'));
     }
 
     public function create()
     {
-        $tag = Tag::select('id','name')->get();
-        $kategori = Kategori::select('id','name')->get();
-        return view('admin.post.create', compact('kategori','tag'));
+        $tag = Tag::select('id', 'name')->get();
+        $kategori = Kategori::select('id', 'name')->get();
+        return view('admin.post.create', compact('kategori', 'tag'));
     }
 
     public function store(Request $request)
@@ -57,10 +57,10 @@ class PostController extends Controller
 
     public function edit($id)
     {
-        $tag = Tag::select('id','name')->get();
-        $kategori = Kategori::select('id','name')->get();
-        $post = Post::select('id', 'picture', 'title', 'content','id_kategori')->whereId($id)->firstOrFail();
-        return view('admin.post.edit', compact('post','kategori','tag'));
+        $tag = Tag::select('id', 'name')->get();
+        $kategori = Kategori::select('id', 'name')->get();
+        $post = Post::select('id', 'picture', 'title', 'content', 'id_kategori')->whereId($id)->firstOrFail();
+        return view('admin.post.edit', compact('post', 'kategori', 'tag'));
     }
 
     public function update(Request $request, $id)
@@ -78,26 +78,45 @@ class PostController extends Controller
             'id_kategori' => $request->kategori,
             'slug'    => Str::slug($request->title, '-'),
         ];
-        $post =  Post::select('picture','id')->whereId($id)->first();
+        $post =  Post::select('picture', 'id')->whereId($id)->first();
         if ($request->picture) {
             File::delete('upload/post/' . $post->picture);
-            $picture = time().'-'.$request->picture->getClientOriginalName();
+            $picture = time() . '-' . $request->picture->getClientOriginalName();
             $request->picture->move('upload/post', $picture);
             $data['picture'] = $picture;
         }
         $post->update($data);
         $post->tag()->sync($request->tag);
-        Alert::success('success','Yazı Başarıyla Güncellendi!');
+        Alert::success('success', 'Yazı Başarıyla Güncellendi!');
         return redirect()->route('post.index');
     }
 
     public function destroy($id)
     {
         //$post = Post::find($id) ?? abort(404, 'Yazı Bulunamadı');
-        $post =  Post::select('picture','id')->whereId($id)->first();
+        $post =  Post::select('picture', 'id')->whereId($id)->first();
         File::delete('upload/post/' . $post->picture);
         $post->delete();
-        Alert::success('success','Yazı Başarıyla Silindi!');
+        Alert::success('success', 'Yazı Başarıyla Silindi!');
+        return redirect()->route('post.index');
+    }
+
+    public function kontrol($id)
+    {
+        alert()->question('Silmek İstediğine Emin misin?','Bu İşlem Geri Alamazsın Dikkat!')
+        ->showConfirmButton('<a href="/post/'.$id.'/delete" class="text-white"><i class="fas fa-trash"></i> Sil</a>', '#e74a3b')
+        ->toHtml()->showCancelButton('Kapat', '#3085d6')->reverseButtons();
+        return redirect()->route('post.index');
+    }
+
+
+    public function delete($id)
+    {
+        //$post = Post::find($id) ?? abort(404, 'Yazı Bulunamadı');
+        $post =  Post::select('picture', 'id')->whereId($id)->firstOrFail();
+        File::delete('upload/post/' . $post->picture);
+        $post->delete();
+        Alert::success('success', 'Yazı Başarıyla Silindi!');
         return redirect()->route('post.index');
     }
 }
