@@ -1,1 +1,1 @@
-<p>Yararlı bir quiz uygulaması.</p>
+<p>Yararlı bir blog uygulaması.</p>
