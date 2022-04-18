@@ -24,9 +24,7 @@
                 <a class="collapse-item" href="{{ route('post.index') }}">Post</a>
                 <a class="collapse-item" href="{{ route('kategori.index') }}">Kategori</a>
                 <a class="collapse-item" href="{{ route('tag.index') }}">Etiket</a>
-                <a class="collapse-item" href="">Banner</a>
-
-
+                <a class="collapse-item" href="{{ route('banner.index') }}">Banner</a>
             </div>
         </div>
     </li>

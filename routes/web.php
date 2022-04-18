@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\KategoriContoller;
 
 /*
@@ -32,8 +33,8 @@ Route::resource('/kategori', KategoriContoller::class);
 Route::resource('/post',     PostController::class);
 Route::get('/post/{id}/kontrol', [PostController::class, 'kontrol']);
 Route::get('/post/{id}/delete', [PostController::class, 'delete']);
-
 Route::resource('/tag',     TagController::class);
+Route::resource('/banner',     BannerController::class);
 
 
 
